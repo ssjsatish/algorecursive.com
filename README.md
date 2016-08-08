@@ -1,2 +1,2 @@
 # algorecursive.com
-My First application using Angular, Bootstrap nad Javascript
+My First application using AngularJS, Bootstrap and Javascript
