@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ServerMon</title>
+    <meta charset="utf-8" />
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body ng-app="AgentApp" ng-controller="MainCtrl">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 text-center">
+                <div class="panel panel-primary" style="margin:20px;" ng-show="showRegister" ng-init="showRegister=true">
+                    <div class="panel-heading text-center">
+                        <h3 class="panel-title">Server Registration</h3>
+                    </div>
+                    <div class="panel-body">
+                        <!--<form class="form-horizontal" action='' method="POST">
+                            <div class="form-group">
+                                <label class="control-label" for="username">Username:</label>
+                                    <input type="text" id="username" name="username" placeholder="" class="input-group-sm">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="email">E-mail</label>
+                                <input type="email" class="input-group-sm" id="email" placeholder="">
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="password">Password</label>
+                                <div class="controls">
+                                    <input type="password" id="password" name="password" placeholder="" class="input-group-sm">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="password_confirm">Password (Confirm)</label>
+                                    <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-group-sm">
+                            </div>
+
+                            <div class="control-group">
+                                <div class="controls">
+                                    <button class="btn btn-success">Register</button>
+                                </div>
+                            </div>
+                        </form>-->
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10">
+                                <ng-form class="form-horizontal" name="registrationForm">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Server Name e.g. CERTDW.Firstam.net"
+                                               ng-model="server.serverName"
+                                               required />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Team Name"
+                                               ng-model="server.teamName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Requested by"
+                                               ng-model="server.requestedBy" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Manager's Name"
+                                               ng-model="server.managerName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password"
+                                               class="form-control"
+                                               placeholder="Password"
+                                               ng-model="server.password" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password"
+                                               class="form-control"
+                                               placeholder="Confirm Password"
+                                               ng-model="server.confirmPassword" />
+                                    </div>
+                                    <div ng-show="server.password !== server.confirmPassword"
+                                         ng-model="spanVal = server.password !== server.confirmPassword" ng-init="spanVal = true">
+                                        <h3 class="alert alert-warning">Password do not match!</h3>
+                                    </div>
+                                    <div class="form-group">
+                                        <span style="vertical-align:middle" class="list-inline">Want to Monitor: </span>
+                                        <label class="checkbox-inline"><input style="width: 20px; height: 18px;" type="checkbox" value="" ng-model="server.etl">ETL</label>
+                                        <label class="checkbox-inline"><input style="width: 20px; height: 18px;" type="checkbox" value="" ng-model="server.reporting">Reporting</label>
+                                        <label class="checkbox-inline"><input style="width: 20px; height: 18px;" type="checkbox" value="" ng-model="server.dba">DBA</label>
+                                    </div>
+                                    <button type="submit"
+                                            class="btn btn-success"
+                                            ng-click="registerServer()"
+                                            ng-disabled="spanVal">
+                                        Register
+                                    </button>
+                                    <br />
+                                    <div class="alert alert-success" ng-show="server.message"><h3>{{server.message}}</h3></div>
+                                </ng-form>
+                                <div>
+                                    <br />
+                                    <span>Already registered?</span>&nbsp;&nbsp;&nbsp;
+                                    <button type="button"
+                                            class="btn btn-primary btn-xs"
+                                            ng-click="login()">
+                                        Login
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-sm-1"></div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="panel panel-primary" style="margin:20px;" ng-hide="showRegister">
+                    <div class="panel-heading text-center">
+                        <h3 class="panel-title">Server Login</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10">
+                                <ng-form class="form-horizontal" name="loginForm">
+                                    <div class="form-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Server Name e.g. CERTDW.Firstam.net"
+                                               ng-model="login.serverName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text"
+                                               class="form-control"
+                                               placeholder="Team Name"
+                                               ng-model="login.teamName" />
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password"
+                                               class="form-control"
+                                               placeholder="Password"
+                                               ng-model="login.password" />
+                                    </div>
+                                    <button type="submit"
+                                            id="signIn"
+                                            class="btn btn-success"
+                                            ng-click="ServerLogin()">
+                                        Login
+                                    </button>
+                                    <br />
+                                    <div class="alert alert-info" ng-show="login.message"><h3>{{login.message}}</h3></div>
+                                </ng-form>
+                                <div>
+                                    <br />
+                                    <span>New to server monitoring?</span>&nbsp;&nbsp;&nbsp;
+                                    <button type="button"
+                                            class="btn btn-primary btn-xs"
+                                            ng-click="Register()">
+                                        Register Here
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-sm-1"></div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+
+    </div>
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script src="Scripts/bootstrap.js"></script>
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-route.js"></script>
+    <script src="app/app.js"></script>
+    
+</body>
+</html>
